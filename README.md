@@ -38,7 +38,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 4. ArgoCD will automatically sync and deploy the application
 
 ## Project Structure
-.
+```
 ├── argocd/
 │   └── application.yml       # ArgoCD application definition
 ├── helm/
@@ -51,3 +51,4 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 │       ├── service.yaml      # Kubernetes service
 │       └── ingress.yaml      # Kubernetes ingress
 └── README.md
+```
