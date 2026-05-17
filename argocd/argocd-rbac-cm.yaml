@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+
+data:
+  policy.default: role:readonly
+
+  policy.csv: |
+    # Developers - can sync and view dev only
+    p, role:developer, applications, get, dev/*, allow
+    p, role:developer, applications, sync, dev/*, allow
+    p, role:developer, applications, override, dev/*, allow
+
+    # Senior engineers - can sync staging and production
+    p, role:senior-engineer, applications, get, */*, allow
+    p, role:senior-engineer, applications, sync, staging/*, allow
+    p, role:senior-engineer, applications, sync, production/*, allow
+    p, role:senior-engineer, applications, override, production/*, allow
+    p, role:senior-engineer, clusters, get, *, allow
+
+    # Readonly - default for everyone else
+    p, role:readonly, applications, get, */*, allow
+
+    # Group bindings
+    g, developers, role:developer
+    g, senior-engineers, role:senior-engineer
+
+  scopes: '[groups, email]'
